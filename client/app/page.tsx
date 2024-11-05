@@ -6,7 +6,7 @@ import io, { Socket } from "socket.io-client";
 
 const Chat = () => {
   const [userName, setUser] = useState("");
-  const [socket, setSocket] = useState<null | Socket>(null); // Local socket state
+  const [socket, setSocket] = useState<null | Socket>(null);
   const router = useRouter();
 
   const handleClick = (e: React.FormEvent) => {
@@ -16,8 +16,7 @@ const Chat = () => {
       return;
     }
 
-    // Initialize socket connection
-    const newSocket = io("http://localhost:5000"); // Replace with your server URL
+    const newSocket = io("http://localhost:5000");
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
@@ -28,10 +27,8 @@ const Chat = () => {
         age: 21,
       };
 
-      // Emit user data to the server
       newSocket.emit("userEvent", user);
 
-      // Navigate to the room after emitting the user data
       router.push(`/room/${userName}`);
     });
 
