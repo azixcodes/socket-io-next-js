@@ -9,12 +9,12 @@ const io = new Server({
 });
 
 let users = [];
-
+const messages = [];
 io.on("connection", (socket) => {
   console.log("socket connected with id of", socket.id);
 
   socket.emit("message", users);
-
+  socket.emit("chatHistory", messages);
   socket.on("userEvent", (user) => {
     console.log("user event is ", user);
 
@@ -38,6 +38,12 @@ io.on("connection", (socket) => {
     io.emit("message", users);
 
     console.log(username + " left the meeting.");
+  });
+
+  socket.on("sendMessage", (message) => {
+    console.log("message recieved from client is ", message);
+    messages.push(message);
+    io.emit("chat", message);
   });
 
   socket.on("disconnect", () => {
